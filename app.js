@@ -1,112 +1,117 @@
 
-// AddBock class make book Object & also make some method to display data
-class AddBock {
+// Library class make book object
+class Library {
     constructor(name, author, type) {
         this.name = name;
         this.author = author;
         this.type = type;
     }
-
 }
-
-// ShowInDisplay class show all thing in webPage
-class ShowInDisplay {
-    // . that make a table body and show in page
-    static showBook(bookData) {
-        let tBody
-        let tableBody = document.getElementById('tableBody')
-        bookData.forEach(book => {
-            tBody += `<tr>
-                    <td>${book.name}</td>
-                    <td>${book.author}</td>
-                    <td>${book.type}</td>
-                </tr>`
+// in Display class -- default all method for showing data
+class Display {
+    // addDataInLocalStr function add data in localStorage and also get data form localStorage
+    static addDataInLocal(bookObj) {
+        let bookFormLocal = localStorage.getItem('bookFormLocal')
+        let book
+        if (bookFormLocal == null) {
+            book = []
+        } else {
+            book = JSON.parse(bookFormLocal)
+        }
+        book.push(bookObj)
+        localStorage.setItem('bookFormLocal', JSON.stringify(book))
+    }
+    // validData--> make sour you are passing valid data in input
+    static validData(bookName, bookAuthor) {
+        if (bookName.length > 3 && bookAuthor.length > 3) {
+            return true
+        }
+    }
+    // clearInput--> clear the form input data
+    static clearInput() {
+        document.getElementById('formInput').reset()
+    }
+    // take data form localStorage and creat table
+    static creatTable() {
+        // getData fom localStorage
+        let bookFormLocal = localStorage.getItem('bookFormLocal')
+        console.log(bookFormLocal);
+        let book
+        if (bookFormLocal == null) {
+            book = []
+        } else {
+            book = JSON.parse(bookFormLocal)
+        }
+        console.log(book);
+        book.forEach(element => {
+            let tBody = `   <tr>
+                                <td>${element.name}</td>
+                                <td>${element.author}</td>
+                                <td>${element.type}</td>
+                            </tr>`
+            let tBodyContainer = document.getElementById('tableBody')
+            tBodyContainer.innerHTML += tBody
         });
-        tableBody.innerHTML = tBody;
+
     }
-    //. this clear function reset the form value
-    static clear() {
-        // . make input resat
-        let formInput = document.getElementById('formInput')
-        formInput.reset()
-    }
-    // . showStatusMassage display book adding status, is it success or error
-    static showStatusMassage(status, displayMessage) {
-        let alert
-        if (status === 'success') {
-            alert = "success"
-        }
-        else {
-            alert = "danger"
-        }
+    // showStatusMassage show the alert - when user added book
+    static showStatusMassage(type, massage) {
+        let bg
+        if (type == "success") {
+            bg = 'success'
+        } else (
+            bg = 'danger'
+        )
+        let status = `
+                        <div class="alert alert-${bg}" role="alert">
+                        <h1 class="badge badge-secondary badge-${bg}">${type}</h1>   ${massage}: 
+                        </div>`
         let showStatusMassageCon = document.getElementById('showStatusMassageCon')
-        showStatusMassageCon.innerHTML = `<div class="alert alert-${alert} alert-dismissible fade show" role="alert">
-        <strong>${status}:</strong> ${displayMessage}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">×</span>
-        </button>
-    </div>`;
-        setTimeout(function () {
-            showStatusMassageCon.innerHTML = ''
+        showStatusMassageCon.innerHTML = status
+        setTimeout(() => {
+            showStatusMassageCon.innerHTML = ""
         }, 5000);
     }
+
 }
+// call creatTable() for show table data when reload the page
+Display.creatTable()
 
-// add eventListener in add button & display data
+// take data form form when user click in #addBookBtn and call some class method
+// addEventListener in #addBookBtn
 let addBookBtn = document.getElementById('addBookBtn')
-addBookBtn.addEventListener('click', display)
-
-// . display function take data form UserForm
-function display(e) {
-    // . take all input value
-    let name = document.getElementById('name').value
-    let author = document.getElementById('author').value
-    let type
+addBookBtn.addEventListener('click', showInDisplay)
+// showInDisplay function will show book in table
+function showInDisplay(e) {
+    // take all input form form 
+    let bookName = document.getElementById('name').value
+    let bookAuthor = document.getElementById('author').value
+    let bookType
     let fiction = document.getElementById('fiction')
     let programing = document.getElementById('programing')
     let story = document.getElementById('story')
     if (fiction.checked) {
-        type = fiction.value
+        bookType = fiction.value
     } else if (programing.checked) {
-        type = programing.value
-    } else if (story.checked) {
-        type = story.value
-    }
-    // . make a Object of taking data by class AddBook
-    book = new AddBock(name, author, type)
-
-    //.  add value in localStorage
-    let books = localStorage.getItem('books')
-    let bookObj = []
-    if (books == null) {
-        bookObj = []
+        bookType = programing.value
     } else {
-        bookObj = JSON.parse(books)
+        bookType = story.value
+    }
+    // make a object by Library class
+    if (Display.validData(bookName, bookAuthor) == true) {
+        let bookObj = new Library(bookName, bookAuthor, bookType)
+        Display.addDataInLocal(bookObj)
+        Display.clearInput()
+        Display.creatTable()
+        Display.showStatusMassage('success', 'Your book success fully added')
+    }
+    else {
+        Display.showStatusMassage('Error', 'Your book not added')
     }
 
-    // . make Source valid data added in localStorage
-    if (book.name.length > 3 && book.author.length > 3) {
-        bookObj.push(book)
-        localStorage.setItem("books", JSON.stringify(bookObj))
-        // . call some class showInDisplay function's to show data in page 
-        ShowInDisplay.showBook(bookObj)
-        ShowInDisplay.clear()
-        ShowInDisplay.showStatusMassage("success", "Your book successfully added in list")
-    } else {
-        ShowInDisplay.showStatusMassage("error", "Your book is not added in list. Please try again")
-    }
+
+
+
 
     e.preventDefault()
 }
-// taking data form localStorage and call showBook for show table when page load
-//.  add value in localStorage
-let books = localStorage.getItem('books')
-let bookObj = []
-if (books == null) {
-    bookObj = []
-} else {
-    bookObj = JSON.parse(books)
-    // . call showBook function to show data in page
-    ShowInDisplay.showBook(bookObj)
-}
-

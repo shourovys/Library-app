@@ -5,16 +5,13 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
     <title>My library</title>
 </head>
 
 <body>
-
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand">My library</a>
         <form class="form-inline">
@@ -24,27 +21,25 @@
     </nav>
     <!-- status massage section -->
     <div class="container" id="showStatusMassageCon"></div>
-
     <!-- from section -->
-
-    <div class="container my-3">
+    <div class="container  bg-dark text-white p-3 m-3 mx-auto rounded-lg border-light">
         <h2 class="mb-2">My library</h2>
         <form id="formInput">
             <div class="form-group row">
-                <label for="name" class="col-sm-2 col-form-label">Name</label>
+                <label for="name" class="col-sm-2 col-form-label">Name :</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="name" placeholder="Book Name">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="author" class="col-sm-2 col-form-label">Author</label>
+                <label for="author" class="col-sm-2 col-form-label">Author :</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="author" placeholder="Book Author">
                 </div>
             </div>
             <fieldset class="form-group">
                 <div class="row">
-                    <legend class="col-form-label col-sm-2 pt-0">Book type</legend>
+                    <legend class="col-form-label col-sm-2 pt-0">Book type :</legend>
                     <div class="col-sm-10">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="type" id="fiction" value="fiction"
@@ -71,18 +66,16 @@
             </fieldset>
             <div class="form-group row">
                 <div class="col-sm-10">
-                    <button type="submit" id="addBookBtn" class="btn btn-primary">Add book</button>
+                    <button id="addBookBtn" class="btn btn-primary">Add book</button>
                 </div>
             </div>
         </form>
     </div>
     <br>
-
     <!-- Table section -->
-
     <div class="container my-3">
-        <h2>All Book</h2>
-        <table class="table table-hover">
+        <h2>&nbsp All Book</h2>
+        <table class="table table-hover border border-light rounded-lg shadow m-2 p-2 ">
             <thead>
                 <tr>
                     <th scope="col">Book Name</th>
@@ -90,25 +83,9 @@
                     <th scope="col">Type of Book</th>
                 </tr>
             </thead>
-            <tbody id="tableBody">
-
-            </tbody>
+            <tbody id="tableBody"></tbody>
         </table>
-
-
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
